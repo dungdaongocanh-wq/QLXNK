@@ -152,10 +152,13 @@ class ExcelImportService
         }
 
         $description = (string)($description ?? '');
+        // Cột V: Số lượng | Cột AE: Đơn vị số lượng
         $quantity = $this->parseNumericCell($sheet, $startRow + 5, 'V');
         $quantityUnit = $this->getCellValue($sheet, $startRow + 5, 'AE');
+        // Cột V: Đơn giá | Cột I: Trị giá hóa đơn (tổng)
         $unitPrice = $this->parseNumericCell($sheet, $startRow + 7, 'V');
         $totalValue = $this->parseNumericCell($sheet, $startRow + 7, 'I');
+        // Cột X: Nước xuất xứ
         $originCountry = $this->getCellValue($sheet, $startRow + 12, 'X');
 
         return [
