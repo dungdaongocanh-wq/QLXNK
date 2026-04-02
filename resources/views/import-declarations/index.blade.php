@@ -7,7 +7,7 @@
     <div class="flex items-center justify-between mb-6">
         <h2 class="text-2xl font-bold text-gray-800">Tờ khai Tạm nhập</h2>
         <div class="flex items-center gap-3">
-            <button onclick="document.getElementById('excelModal').classList.remove('hidden')"
+            <button id="openExcelModal"
                     class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg transition-colors">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
@@ -68,7 +68,7 @@
                             <div class="flex items-center gap-3">
                                 <a href="{{ route('import-declarations.show', $decl) }}" class="text-blue-600 hover:text-blue-800 font-medium">Xem</a>
                                 <a href="{{ route('import-declarations.edit', $decl) }}" class="text-yellow-600 hover:text-yellow-800 font-medium">Sửa</a>
-                                <form action="{{ route('import-declarations.destroy', $decl) }}" method="POST" onsubmit="return confirm('Xóa tờ khai này?')">
+                                <form action="{{ route('import-declarations.destroy', $decl) }}" method="POST" class="delete-form">
                                     @csrf @method('DELETE')
                                     <button type="submit" class="text-red-600 hover:text-red-800 font-medium">Xóa</button>
                                 </form>
@@ -101,7 +101,8 @@
     <div class="bg-white rounded-xl shadow-xl w-full max-w-md p-6">
         <div class="flex items-center justify-between mb-4">
             <h3 class="text-lg font-semibold text-gray-800">Import file Excel</h3>
-            <button onclick="document.getElementById('excelModal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600">
+            <button type="button" id="closeExcelModal"
+                    class="text-gray-400 hover:text-gray-600">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                 </svg>
@@ -120,7 +121,7 @@
                 <p class="text-xs text-gray-500 mt-1">Hỗ trợ .xlsx, .xls</p>
             </div>
             <div class="flex gap-3 mt-4">
-                <button type="button" onclick="document.getElementById('excelModal').classList.add('hidden')"
+                <button type="button" id="cancelExcelModal"
                         class="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 text-sm font-medium">
                     Hủy
                 </button>
@@ -133,3 +134,17 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    const modal = document.getElementById('excelModal');
+    document.getElementById('openExcelModal').addEventListener('click', () => modal.classList.remove('hidden'));
+    document.getElementById('closeExcelModal').addEventListener('click', () => modal.classList.add('hidden'));
+    document.getElementById('cancelExcelModal').addEventListener('click', () => modal.classList.add('hidden'));
+    document.querySelectorAll('.delete-form').forEach(form => {
+        form.addEventListener('submit', e => {
+            if (!confirm('Xóa tờ khai này?')) e.preventDefault();
+        });
+    });
+</script>
+@endpush

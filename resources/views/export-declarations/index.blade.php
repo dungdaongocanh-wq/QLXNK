@@ -55,7 +55,7 @@
                             <div class="flex items-center gap-3">
                                 <a href="{{ route('export-declarations.show', $decl) }}" class="text-blue-600 hover:text-blue-800 font-medium">Xem</a>
                                 <a href="{{ route('export-declarations.edit', $decl) }}" class="text-yellow-600 hover:text-yellow-800 font-medium">Sửa</a>
-                                <form action="{{ route('export-declarations.destroy', $decl) }}" method="POST" onsubmit="return confirm('Xóa tờ khai này?')">
+                                <form action="{{ route('export-declarations.destroy', $decl) }}" method="POST" class="delete-form">
                                     @csrf @method('DELETE')
                                     <button type="submit" class="text-red-600 hover:text-red-800 font-medium">Xóa</button>
                                 </form>
@@ -83,3 +83,13 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    document.querySelectorAll('.delete-form').forEach(form => {
+        form.addEventListener('submit', e => {
+            if (!confirm('Xóa tờ khai này?')) e.preventDefault();
+        });
+    });
+</script>
+@endpush
