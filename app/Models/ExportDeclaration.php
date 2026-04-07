@@ -93,4 +93,10 @@ class ExportDeclaration extends Model
                      ->where('expiry_date', '>=', now())
                      ->where('status', 'active');
     }
+
+    public function scopeOverdue(Builder $query): Builder
+    {
+        return $query->where('expiry_date', '<', now())
+                     ->where('status', 'active');
+    }
 }
